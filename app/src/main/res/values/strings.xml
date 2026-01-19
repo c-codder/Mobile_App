@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Customer Feedback</string>
+    <string name="first_name">First Name:</string>
+    <string name="last_name">Last Name:</string>
+    <string name="phone_number">Phone Number:</string>
+    <string name="comment">Comment:</string>
+    <string name="send">Send</string>
+    <string name="reset">Reset</string>
+</resources>
