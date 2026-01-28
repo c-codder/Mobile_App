@@ -13,7 +13,9 @@
         android:theme="@style/Theme.MyApplication1">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.MyApplication1.Dialog"
+            android:theme="@style/Theme.MyApplication1"
+            android:configChanges="orientation|screenSize|screenLayout"
+            android:screenOrientation="unspecified"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
