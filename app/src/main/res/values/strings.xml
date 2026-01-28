@@ -1,13 +1,20 @@
 <resources>
     <string name="app_name">Registration Form</string>
     <string name="first_name">First Name:</string>
+    <string name="first_name_hint">Enter your first name</string>
     <string name="last_name">Last Name:</string>
+    <string name="last_name_hint">Enter your last name</string>
     <string name="birthday">Birthday:</string>
+    <string name="birthday_hint">YYYY-MM-DD</string>
     <string name="phone_number">Phone Number:</string>
+    <string name="phone_number_hint">Enter your phone number</string>
     <string name="home_address">Home Address:</string>
+    <string name="home_address_hint">Enter your home address</string>
     <string name="email_address">Email Address:</string>
-    <string name="random_number_label">Random Number: </string>
-    <string name="last_random_number_label">Last Random Number: </string>
+    <string name="email_address_hint">Enter your email address</string>
+    <string name="random_number_label">Random Number: %1$d</string>
+    <string name="last_random_number_label">Last Random Number: %1$d</string>
     <string name="send">Send</string>
     <string name="reset">Reset</string>
+    <string name="orientation_changed">Orientation changed at: %1$s</string>
 </resources>
