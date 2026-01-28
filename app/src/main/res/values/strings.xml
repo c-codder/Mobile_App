@@ -1,9 +1,13 @@
 <resources>
-    <string name="app_name">Customer Feedback</string>
+    <string name="app_name">Registration Form</string>
     <string name="first_name">First Name:</string>
     <string name="last_name">Last Name:</string>
+    <string name="birthday">Birthday:</string>
     <string name="phone_number">Phone Number:</string>
-    <string name="comment">Comment:</string>
+    <string name="home_address">Home Address:</string>
+    <string name="email_address">Email Address:</string>
+    <string name="random_number_label">Random Number: </string>
+    <string name="last_random_number_label">Last Random Number: </string>
     <string name="send">Send</string>
     <string name="reset">Reset</string>
 </resources>
