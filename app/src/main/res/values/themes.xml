@@ -1,14 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
     <style name="Base.Theme.MyApplication1" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
+
     </style>
 
     <style name="Theme.MyApplication1" parent="Base.Theme.MyApplication1" />
 
-    <!-- Theme for Dialog with No Title -->
+
     <style name="Theme.MyApplication1.Dialog" parent="Theme.AppCompat.Dialog">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+
+    <style name="Theme.MyApplication1.FullScreen" parent="Theme.AppCompat.DayNight">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 </resources>

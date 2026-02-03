@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // Task: Modify the application so it does not have a title.
+
         supportRequestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
         
         setContentView(R.layout.activity_main);
@@ -61,17 +61,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         
-        // Make the dialog box wider and taller so the buttons are visible.
-        if (getWindow() != null) {
+
+        /*if (getWindow() != null) {
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
             
-            // Set width to 90% and height to 70% of screen size
+
             int width = (int) (displayMetrics.widthPixels * 0.90);
             int height = (int) (displayMetrics.heightPixels * 0.70);
             
             getWindow().setLayout(width, height);
-        }
+        }*/
         
         logLifecycle("onStart()");
     }
