@@ -6,4 +6,19 @@
     <string name="comment">Comment:</string>
     <string name="send">Send</string>
     <string name="reset">Reset</string>
+    <string name="logo">Logo</string>
+    <string name="first_name_hint">Enter first name</string>
+    <string name="last_name_hint">Enter last name</string>
+    <string name="birthday">Birthday:</string>
+    <string name="birthday_hint">YYYY-MM-DD</string>
+    <string name="phone_hint">Enter phone number</string>
+    <string name="home_address">Home Address:</string>
+    <string name="home_address_hint">Enter address</string>
+    <string name="email">Email:</string>
+    <string name="email_hint">Enter email</string>
+    <string name="mode_registration">Registration Form</string>
+    <string name="mode_random">Random Number</string>
+    <string name="random_number_label">Random number (updates every second):</string>
+    <string name="latest_before_rotation">Latest before orientation change:</string>
+    <string name="orientation_changed_at">Orientation changed at:</string>
 </resources>
