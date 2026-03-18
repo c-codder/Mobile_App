@@ -1,153 +1,116 @@
 package com.example.assigment_4;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    private NumberGameManager gameManager;
-    private EditText favoriteNumberInput;
+    private ProductManager productManager;
+    private EditText etId, etName, etPrice, etAmount;
+    private TextView tvSummary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Set the base layout from XML
+        // Load the UI from activity_main.xml
         setContentView(R.layout.activity_main);
 
+        productManager = new ProductManager();
 
-        gameManager = new NumberGameManager();
+        // Connect the Java variables to the XML views
+        etId = findViewById(R.id.etId);
+        etName = findViewById(R.id.etName);
+        etPrice = findViewById(R.id.etPrice);
+        etAmount = findViewById(R.id.etAmount);
+        tvSummary = findViewById(R.id.tvSummary);
 
-        // Create the user interface during runtime
-        initializeUserInterface();
+        Button btnSubmit = findViewById(R.id.btnSubmit);
+        Button btnClear = findViewById(R.id.btnClear);
+
+        // Set button click listeners
+        btnSubmit.setOnClickListener(v -> handleSubmitting());
+        btnClear.setOnClickListener(v -> clearInputs());
     }
 
-
-    private void initializeUserInterface() {
-        LinearLayout mainContainer = findViewById(R.id.main_container);
-
-
-        TextView instructionLabel = new TextView(this);
-        instructionLabel.setText("Type your favourite number");
-        instructionLabel.setTextSize(18);
-        mainContainer.addView(instructionLabel);
-
-
-        favoriteNumberInput = new EditText(this);
-        favoriteNumberInput.setHint("Enter number here");
-        // Ensure only numbers can be entered
-        favoriteNumberInput.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
-        // Set keyboard action to "Go"
-        favoriteNumberInput.setImeOptions(EditorInfo.IME_ACTION_GO);
-        
-        // Listen for the "Go" key (Enter)
-        favoriteNumberInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                // Check if Go key or Enter key was pressed
-                if (actionId == EditorInfo.IME_ACTION_GO || 
-                    (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
-                    
-                    // Interaction logic starts here
-                    handleUserInput();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        mainContainer.addView(favoriteNumberInput);
-    }
-
-
-    private void handleUserInput() {
-        String inputString = favoriteNumberInput.getText().toString();
-        
-        if (inputString.isEmpty()) {
-            showToastMessage("Please enter a number first!");
-            return;
-        }
-
+    private void handleSubmitting() {
         try {
-            int userValue = Integer.parseInt(inputString);
-            
+            String id = etId.getText().toString();
+            String name = etName.getText().toString();
+            double price = Double.parseDouble(etPrice.getText().toString());
+            int amount = Integer.parseInt(etAmount.getText().toString());
 
-            FavoriteNumber userFavorite = new FavoriteNumber(userValue);
-            
+            if (name.isEmpty() || id.isEmpty()) throw new Exception();
 
-            int generatedRandom = gameManager.generateNewRandomNumber(1, 10);
-            boolean isCorrectGuess = gameManager.checkIfMatch(userFavorite.getStoredValue());
+            Product p = new Product(id, name, price, amount);
+            productManager.addProduct(p);
 
+            updateSummary();
+            clearInputs();
+            Toast.makeText(this, "Product Added!", Toast.LENGTH_SHORT).show();
 
-            String resultText = createResultMessage(isCorrectGuess, userFavorite.getStoredValue(), generatedRandom);
-            
-
-            showToastMessage(resultText);
-
-        } catch (NumberFormatException e) {
-            showToastMessage("Invalid input! Please enter a valid number.");
+        } catch (Exception e) {
+            Toast.makeText(this, "Please enter all valid data!", Toast.LENGTH_SHORT).show();
         }
     }
 
-
-    private String createResultMessage(boolean isMatch, int userNum, int randomNum) {
-        if (isMatch) {
-            return "Success! Your favorite number " + userNum + " matches the random number!";
-        } else {
-            return "No match. Your number: " + userNum + ", Random number: " + randomNum;
-        }
+    private void updateSummary() {
+        tvSummary.setText(productManager.getAllProductsSummary());
     }
 
-
-    private void showToastMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    private void clearInputs() {
+        etId.setText("");
+        etName.setText("");
+        etPrice.setText("");
+        etAmount.setText("");
     }
 }
 
+// Data Model
+class Product {
+    String id, name;
+    double price;
+    int amount;
 
-class FavoriteNumber {
-
-    private int storedValue;
-
-    public FavoriteNumber(int value) {
-        setStoredValue(value);
+    public Product(String id, String name, double price, int amount) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.amount = amount;
     }
 
-
-    public int getStoredValue() {
-        return storedValue;
-    }
-
-
-    public void setStoredValue(int value) {
-        // Rule 9: Check values before initialization
-        if (value < 0) {
-            this.storedValue = 0;
-        } else {
-            this.storedValue = value;
-        }
+    public double getTotalValue() {
+        return price * amount;
     }
 }
 
+// Business Logic Manager
+class ProductManager {
+    private ArrayList<Product> productList = new ArrayList<>();
 
-class NumberGameManager {
-    private int currentRandomNumber;
-
-
-    public int generateNewRandomNumber(int min, int max) {
-        currentRandomNumber = (int) (Math.random() * (max - min + 1) + min);
-        return currentRandomNumber;
+    public void addProduct(Product p) {
+        productList.add(p);
     }
 
+    public String getAllProductsSummary() {
+        StringBuilder sb = new StringBuilder();
+        double grandTotal = 0;
 
-    public boolean checkIfMatch(int userNumber) {
-        return userNumber == currentRandomNumber;
+        for (Product p : productList) {
+            sb.append("ID: ").append(p.id)
+                    .append(" | ").append(p.name)
+                    .append("\nPrice: ").append(p.price)
+                    .append(" x ").append(p.amount)
+                    .append(" = ").append(p.getTotalValue()).append("\n\n");
+            grandTotal += p.getTotalValue();
+        }
+        sb.append("--------------------\n");
+        sb.append("Total Inventory Value: ").append(grandTotal);
+
+        return sb.toString();
     }
 }
