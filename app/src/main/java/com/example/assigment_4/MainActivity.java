@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Rule 8: Variables are private
+
     private NumberGameManager gameManager;
     private EditText favoriteNumberInput;
 
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         // Set the base layout from XML
         setContentView(R.layout.activity_main);
 
-        // Rule 7: Initialize the manager class which takes care of operations
+
         gameManager = new NumberGameManager();
 
         // Create the user interface during runtime
@@ -33,13 +33,13 @@ public class MainActivity extends AppCompatActivity {
     private void initializeUserInterface() {
         LinearLayout mainContainer = findViewById(R.id.main_container);
 
-        // Rule 1: Descriptive variable name for the label
+
         TextView instructionLabel = new TextView(this);
         instructionLabel.setText("Type your favourite number");
         instructionLabel.setTextSize(18);
         mainContainer.addView(instructionLabel);
 
-        // Rule 1: Descriptive variable name for the input field
+
         favoriteNumberInput = new EditText(this);
         favoriteNumberInput.setHint("Enter number here");
         // Ensure only numbers can be entered
@@ -78,17 +78,17 @@ public class MainActivity extends AppCompatActivity {
         try {
             int userValue = Integer.parseInt(inputString);
             
-            // Rule 7: Use a concept class to hold the data
+
             FavoriteNumber userFavorite = new FavoriteNumber(userValue);
             
-            // Rule 6: Business logic is handled by the manager class, not in the interaction method
+
             int generatedRandom = gameManager.generateNewRandomNumber(1, 10);
             boolean isCorrectGuess = gameManager.checkIfMatch(userFavorite.getStoredValue());
 
-            // Rule 4: Get a string result from a helper method instead of printing directly
+
             String resultText = createResultMessage(isCorrectGuess, userFavorite.getStoredValue(), generatedRandom);
             
-            // Rule 3: Separate printing/display logic from calculation logic
+
             showToastMessage(resultText);
 
         } catch (NumberFormatException e) {
@@ -113,19 +113,19 @@ public class MainActivity extends AppCompatActivity {
 
 
 class FavoriteNumber {
-    // Rule 8: Private variable
+
     private int storedValue;
 
     public FavoriteNumber(int value) {
         setStoredValue(value);
     }
 
-    // Rule 8: Method to interact with variable
+
     public int getStoredValue() {
         return storedValue;
     }
 
-    // Rule 8: Method to interact with variable
+
     public void setStoredValue(int value) {
         // Rule 9: Check values before initialization
         if (value < 0) {
