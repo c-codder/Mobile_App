@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,37 +15,52 @@ public class MainActivity extends AppCompatActivity {
     private EditText etId, etName, etPrice, etAmount;
     private TextView tvSummary;
 
+    private static final String KEY_PRODUCT_LIST = "product_list";   // ← NEW
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Load the UI from activity_main.xml
         setContentView(R.layout.activity_main);
 
         productManager = new ProductManager();
 
-        // Connect the Java variables to the XML views
         etId = findViewById(R.id.etId);
         etName = findViewById(R.id.etName);
         etPrice = findViewById(R.id.etPrice);
         etAmount = findViewById(R.id.etAmount);
         tvSummary = findViewById(R.id.tvSummary);
 
-        Button btnSubmit = findViewById(R.id.btnSubmit);
-        Button btnClear = findViewById(R.id.btnClear);
+        findViewById(R.id.btnSubmit).setOnClickListener(v -> handleSubmitting());
+        findViewById(R.id.btnClear).setOnClickListener(v -> clearInputs());
 
-        // Set button click listeners
-        btnSubmit.setOnClickListener(v -> handleSubmitting());
-        btnClear.setOnClickListener(v -> clearInputs());
+        // NEW: Restore data after rotation
+        if (savedInstanceState != null) {
+            ArrayList<Product> savedList = (ArrayList<Product>)
+                    savedInstanceState.getSerializable(KEY_PRODUCT_LIST);
+            if (savedList != null) {
+                productManager.setProductList(savedList);
+                updateSummary();
+            }
+        }
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(KEY_PRODUCT_LIST, productManager.getProductList());
     }
 
     private void handleSubmitting() {
         try {
-            String id = etId.getText().toString();
-            String name = etName.getText().toString();
-            double price = Double.parseDouble(etPrice.getText().toString());
-            int amount = Integer.parseInt(etAmount.getText().toString());
+            String id = etId.getText().toString().trim();
+            String name = etName.getText().toString().trim();
+            double price = Double.parseDouble(etPrice.getText().toString().trim());
+            int amount = Integer.parseInt(etAmount.getText().toString().trim());
 
-            if (name.isEmpty() || id.isEmpty()) throw new Exception();
+            if (id.isEmpty() || name.isEmpty()) {
+                throw new Exception("Empty fields");
+            }
 
             Product p = new Product(id, name, price, amount);
             productManager.addProduct(p);
@@ -71,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 }
 
 // Data Model
-class Product {
+class Product implements Serializable {
     String id, name;
     double price;
     int amount;
@@ -96,20 +112,31 @@ class ProductManager {
         productList.add(p);
     }
 
+
+    public ArrayList<Product> getProductList() {
+        return new ArrayList<>(productList);   // returns a copy
+    }
+
+    public void setProductList(ArrayList<Product> list) {
+        productList.clear();
+        productList.addAll(list);
+    }
+
     public String getAllProductsSummary() {
         StringBuilder sb = new StringBuilder();
         double grandTotal = 0;
 
         for (Product p : productList) {
+            double total = p.getTotalValue();
             sb.append("ID: ").append(p.id)
                     .append(" | ").append(p.name)
                     .append("\nPrice: ").append(p.price)
                     .append(" x ").append(p.amount)
-                    .append(" = ").append(p.getTotalValue()).append("\n\n");
-            grandTotal += p.getTotalValue();
+                    .append(" = ").append(total).append("\n\n");
+            grandTotal += total;
         }
-        sb.append("--------------------\n");
-        sb.append("Total Inventory Value: ").append(grandTotal);
+        sb.append("--------------------\n")
+                .append("Total Inventory Value: ").append(grandTotal);
 
         return sb.toString();
     }
