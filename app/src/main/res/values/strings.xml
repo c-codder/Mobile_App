@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Phone Catalog</string>
+    <string name="submit_title">Submit Personal Data</string>
+    <string name="search_title">Search Personal Data</string>
+    <string name="hint_first_name">First Name</string>
+    <string name="hint_last_name">Last Name</string>
+    <string name="hint_phone">Phone Number</string>
+    <string name="btn_submit">Submit</string>
+    <string name="hint_search_first">Search by First Name</string>
+    <string name="hint_search_last">Search by Last Name</string>
+    <string name="hint_search_phone">Search by Phone</string>
+    <string name="msg_fill_all">Please fill all fields</string>
+    <string name="msg_success">Data submitted successfully</string>
+    <string name="label_first">First name=</string>
+    <string name="label_last">, Last name=</string>
+    <string name="label_phone">, Phone=</string>
+</resources>
